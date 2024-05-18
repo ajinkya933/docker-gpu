@@ -1,5 +1,16 @@
 # docker-gpu
 
+This guide is for following ubuntu version with gtx 1080ti gpu:
+```
+$ lsb_release -a
+No LSB modules are available.
+Distributor ID:	Ubuntu
+Description:	Ubuntu 22.04.4 LTS
+Release:	22.04
+Codename:	jammy
+
+```
+
 Steps to connect docker runtime to nvidia backend, so that we can use `nvidia-smi` inside docker container
 
 - Step1: Install nvidia-container-toolkit
@@ -43,3 +54,34 @@ nvidia-smi
 
 ## cuda version = 11.5 
 note that nvidia-smi command also shows cuda vesion but thats not correct, refer `nvcc --version` for getting correct cuda version
+
+```
+I had to create preference for nvidia-docker.
+
+vi /etc/apt/preferences.d/nvidia-docker-pin-1002
+with content;
+Package: *
+Pin: origin nvidia.github.io
+Pin-Priority: 1002
+```
+
+And then this option worked for me: 
+```
+$ sudo tee /etc/docker/daemon.json <<EOF
+{
+    "runtimes": {
+        "nvidia": {
+            "path": "/usr/bin/nvidia-container-runtime",
+            "runtimeArgs": []
+        }
+    }
+}
+EOF
+sudo pkill -SIGHUP dockerd
+```
+```
+$ docker info|grep -i runtime
+ Runtimes: nvidia runc
+ Default Runtime: runc
+
+```

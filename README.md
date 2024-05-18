@@ -148,3 +148,11 @@ $ docker run --gpus all --rm tensorflow/tensorflow:latest-gpu nvidia-smi
 +---------------------------------------------------------------------------------------+
 
 ```
+
+### Jupyterlab integration:
+ssh into anyone gpu container and run
+```
+pip install jupyter -U && pip install jupyterlab
+
+jupyterlab
+```

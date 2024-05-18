@@ -85,3 +85,42 @@ $ docker info|grep -i runtime
  Default Runtime: runc
 
 ```
+Lets run docker with gpu runtime
+```
+sudo su
+
+ root@dlp:~# curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | apt-key add -
+
+OK
+root@dlp:~# curl -s -L https://nvidia.github.io/nvidia-docker/ubuntu22.04/nvidia-docker.list > /etc/apt/sources.list.d/nvidia-docker.list
+root@dlp:~# apt update
+
+root@dlp:~# apt -y install nvidia-container-toolkit
+
+root@dlp:~# systemctl restart docker 
+```
+
+```
+docker run --rm --gpus all nvidia/cuda:11.5.2-base-ubuntu20.04 nvidia-smi
+
+Sat May 18 08:39:32 2024       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.171.04             Driver Version: 535.171.04   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA GeForce GTX 1080 Ti     Off | 00000000:06:00.0  On |                  N/A |
+|  0%   47C    P8              19W / 280W |    385MiB / 11264MiB |      9%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
++---------------------------------------------------------------------------------------+
+```
+
